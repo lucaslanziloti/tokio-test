@@ -1,15 +1,15 @@
-# Custumer Service
+# customer service api
 
-### Requisitos
+## Running it
+After clone it, build the project: ``` mvn clean install```.
 
-1. JDK 8
-1. Maven 3
+Then run the project: ```mvn spring-boot:run```.
 
-### Rodando
+## Endpoints
+This project it's documented by swagger, after executing the project, access this link: [swagger](http://localhost:8080/swagger-ui.html/).
 
-1. Clone o projeto: `https://github.com/leonardohenrique/tokio-test.git`
-1. Entre na pasta `tokio-test` e execute: `mvn spring-boot:run`
-1. Acesse: `http://localhost:8080/customers`
+## Tests
+There Integration test, to run then just execute: ``` mvn clean install```.
 
-
-
+## Testing environment
+This project is hosted in Heroku, access link: [Heroku project clickbus-place](https://test-tokio-lucaslanziloti.herokuapp.com/swagger-ui.html).
