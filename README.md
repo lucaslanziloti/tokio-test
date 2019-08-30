@@ -12,4 +12,4 @@ This project it's documented by swagger, after executing the project, access thi
 There Integration test, to run then just execute: ``` mvn clean install```.
 
 ## Testing environment
-This project is hosted in Heroku, access link: [Heroku project clickbus-place](https://test-tokio-lucaslanziloti.herokuapp.com/swagger-ui.html).
+This project is hosted in Heroku, access link: [Heroku project test-tokio-lucaslanziloti](https://test-tokio-lucaslanziloti.herokuapp.com/swagger-ui.html).
