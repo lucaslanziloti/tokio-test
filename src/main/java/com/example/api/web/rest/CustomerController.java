@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.api.domain.Customer;
+import com.example.api.dto.CustomerDto;
 import com.example.api.service.ICustomerService;
 
 import io.swagger.annotations.ApiOperation;
@@ -33,18 +33,18 @@ public class CustomerController {
 
 	@GetMapping
 	@ApiOperation(value = "Search customers using Pageable")
-	public Page<Customer> findAll(
+	public Page<CustomerDto> findAll(
 			@PageableDefault(sort = "name", direction = Direction.ASC, page = 0, size = 10) Pageable pageable) {
 		return customerService.findAll(pageable);
 	}
 
 	@GetMapping("/{id}")
 	@ApiOperation(value = "Search customer by id")
-	public ResponseEntity<Customer> findById(@PathVariable Long id) {
+	public ResponseEntity<CustomerDto> findById(@PathVariable Long id) {
 		try {
-			Customer placeDto = customerService.findById(id);
+			CustomerDto customerDto = customerService.findById(id);
 
-			return ResponseEntity.ok(placeDto);
+			return ResponseEntity.ok(customerDto);
 		} catch (EntityNotFoundException e) {
 			return ResponseEntity.notFound().build();
 		}
@@ -52,19 +52,19 @@ public class CustomerController {
 
 	@PostMapping
 	@ApiOperation(value = "Save a customer")
-	public ResponseEntity<Customer> save(@RequestBody @Valid Customer customer) {
-		customer = customerService.save(customer);
+	public ResponseEntity<CustomerDto> save(@RequestBody @Valid CustomerDto customerDto) {
+		customerDto = customerService.save(customerDto);
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(customer);
+		return ResponseEntity.status(HttpStatus.CREATED).body(customerDto);
 	}
 
 	@PutMapping
 	@ApiOperation(value = "Update a customer")
-	public ResponseEntity<Customer> update(@RequestBody @Valid Customer customer) {
+	public ResponseEntity<CustomerDto> update(@RequestBody @Valid CustomerDto customerDto) {
 		try {
-			customer = customerService.update(customer);
+			customerDto = customerService.update(customerDto);
 
-			return ResponseEntity.ok(customer);
+			return ResponseEntity.ok(customerDto);
 		} catch (EntityNotFoundException e) {
 			return ResponseEntity.notFound().build();
 		}

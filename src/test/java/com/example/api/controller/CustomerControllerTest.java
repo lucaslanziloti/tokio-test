@@ -34,7 +34,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.example.api.ApiApplication;
-import com.example.api.domain.Customer;
+import com.example.api.dto.CustomerDto;
 import com.example.api.service.ICustomerService;
 import com.example.api.web.rest.CustomerController;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -62,10 +62,10 @@ public class CustomerControllerTest {
 	}
 
 	@Test
-	public void shouldReturnOnePlaceById() throws Exception {
-		Customer customer = createPlaceList().get(0);
+	public void shouldReturnOneCustomerById() throws Exception {
+		CustomerDto customerDto = createCustomerList().get(0);
 		
-		when(customerService.findById(1L)).thenReturn(customer);
+		when(customerService.findById(1L)).thenReturn(customerDto);
 		
 		this.mockMvc.perform(get(ENDPOINT + "/1"))
 				.andDo(print())
@@ -87,47 +87,47 @@ public class CustomerControllerTest {
 
 	@Test
 	public void shouldReturnAllItems() throws Exception {
-		when(customerService.findAll(Mockito.any(Pageable.class))).thenReturn(new PageImpl<>(createPlaceList()));
+		when(customerService.findAll(Mockito.any(Pageable.class))).thenReturn(new PageImpl<>(createCustomerList()));
 
 		this.mockMvc.perform(get(ENDPOINT)).andDo(print())
 				.andExpect(status().isOk())
 				.andExpect(jsonPath(CONTENT_LIST).isArray())
 				.andExpect(jsonPath(CONTENT_LIST).isNotEmpty())
-				.andExpect(jsonPath(CONTENT_LIST, hasSize(createPlaceList().size())));
+				.andExpect(jsonPath(CONTENT_LIST, hasSize(createCustomerList().size())));
 	}
 
 	@Test
-	public void shouldSavePlace() throws Exception {
-		Customer customer = createPlaceList().get(0);
+	public void shouldSaveCustomer() throws Exception {
+		CustomerDto customerDto = createCustomerList().get(0);
 		
-		when(customerService.save(Mockito.any(Customer.class))).thenReturn(customer);
+		when(customerService.save(Mockito.any(CustomerDto.class))).thenReturn(customerDto);
 		
 		this.mockMvc.perform(post(ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(convertObjectToJson(customer)))
+                .content(convertObjectToJson(customerDto)))
 				.andDo(print())
 				.andExpect(status().isCreated());
 		
-		Mockito.verify(customerService, Mockito.times(1)).save(customer);
+		Mockito.verify(customerService, Mockito.times(1)).save(customerDto);
 	}
 
 	@Test
-	public void shouldUpdatePlace() throws Exception {
-		Customer customer = createPlaceList().get(0);
+	public void shouldUpdateCustomer() throws Exception {
+		CustomerDto customerDto = createCustomerList().get(0);
 		
-		when(customerService.update(Mockito.any(Customer.class))).thenReturn(customer);
+		when(customerService.update(Mockito.any(CustomerDto.class))).thenReturn(customerDto);
 		
 		this.mockMvc.perform(put(ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(convertObjectToJson(customer)))
+                .content(convertObjectToJson(customerDto)))
 				.andDo(print())
 				.andExpect(status().isOk());
 		
-		Mockito.verify(customerService, Mockito.times(1)).update(customer);
+		Mockito.verify(customerService, Mockito.times(1)).update(customerDto);
 	}
 
 	@Test
-	public void shouldDeletePlace() throws Exception {
+	public void shouldDeleteCustomer() throws Exception {
 		doNothing().when(customerService).remove(Mockito.any(Long.class));
 		
 		this.mockMvc.perform(delete(ENDPOINT + "/1"))
@@ -139,17 +139,17 @@ public class CustomerControllerTest {
 
 	@Test
 	public void shouldThrowNotFoundOnUpdate() throws Exception {
-		Customer customer = createPlaceList().get(0);
+		CustomerDto customerDto = createCustomerList().get(0);
 		
-		when(customerService.update(customer)).thenThrow(EntityNotFoundException.class);
+		when(customerService.update(customerDto)).thenThrow(EntityNotFoundException.class);
 		
 		this.mockMvc.perform(put(ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(convertObjectToJson(customer)))
+                .content(convertObjectToJson(customerDto)))
 				.andDo(print())
 				.andExpect(status().isNotFound());
 		
-		Mockito.verify(customerService, Mockito.times(1)).update(customer);
+		Mockito.verify(customerService, Mockito.times(1)).update(customerDto);
 	}
 
 	@Test
@@ -163,13 +163,13 @@ public class CustomerControllerTest {
 		Mockito.verify(customerService, Mockito.times(1)).remove(1L);
 	}
 
-	private List<Customer> createPlaceList() {
-		List<Customer> listPopulated = new ArrayList<>();
+	private List<CustomerDto> createCustomerList() {
+		List<CustomerDto> listPopulated = new ArrayList<>();
 
-		listPopulated.add(new Customer(1L, "Teste 1", "teste_1@mail.com"));
-		listPopulated.add(new Customer(2L, "Teste 2", "teste_2@mail.com"));
-		listPopulated.add(new Customer(3L, "Teste 3", "teste_3@mail.com"));
-		listPopulated.add(new Customer(4L, "Teste 4", "teste_4@mail.com"));
+		listPopulated.add(new CustomerDto(1L, "Teste 1", "teste_1@mail.com"));
+		listPopulated.add(new CustomerDto(2L, "Teste 2", "teste_2@mail.com"));
+		listPopulated.add(new CustomerDto(3L, "Teste 3", "teste_3@mail.com"));
+		listPopulated.add(new CustomerDto(4L, "Teste 4", "teste_4@mail.com"));
 
 		return listPopulated;
 	}
