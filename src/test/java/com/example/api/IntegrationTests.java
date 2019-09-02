@@ -22,7 +22,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.example.api.domain.Customer;
+import com.example.api.dto.CustomerDto;
 
 
 @RunWith(SpringRunner.class)
@@ -44,64 +44,64 @@ public class IntegrationTests {
 	}
 
 	@Test
-	public void aShouldFindAPlaceById() {
+	public void aShouldFindACustomerById() {
 		endpoint.append("/1");
 
-		ResponseEntity<Customer> result = this.restTemplate.getForEntity(endpoint.toString(), Customer.class);
+		ResponseEntity<CustomerDto> result = this.restTemplate.getForEntity(endpoint.toString(), CustomerDto.class);
 
 		assertEquals(200, result.getStatusCodeValue());
 		assertEquals(result.getBody().getId().intValue(), 1);
 	}
 
 	@Test
-	public void bShouldDeletePlace() {
+	public void bShouldDeleteCustomer() {
 		endpoint.append("/1");
 		restTemplate.delete(endpoint.toString());
 
-		ResponseEntity<Customer> result = this.restTemplate.getForEntity(endpoint.toString(), Customer.class);
+		ResponseEntity<CustomerDto> result = this.restTemplate.getForEntity(endpoint.toString(), CustomerDto.class);
 
 		assertEquals(404, result.getStatusCodeValue());
 	}
 
 	@Test
-	public void shouldSaveAPlace() throws URISyntaxException {
-		Customer customer = new Customer();
-		customer.setEmail("test@mail.com");
-		customer.setName("Name integration test");
+	public void shouldSaveACustomer() throws URISyntaxException {
+		CustomerDto customerDto = new CustomerDto();
+		customerDto.setEmail("test@mail.com");
+		customerDto.setName("Name integration test");
 
 		HttpHeaders headers = new HttpHeaders();
 
-		HttpEntity<Customer> request = new HttpEntity<>(customer, headers);
+		HttpEntity<CustomerDto> request = new HttpEntity<>(customerDto, headers);
 
-		ResponseEntity<Customer> result = this.restTemplate.postForEntity(new URI(endpoint.toString()), request,
-				Customer.class);
+		ResponseEntity<CustomerDto> result = this.restTemplate.postForEntity(new URI(endpoint.toString()), request,
+				CustomerDto.class);
 
 		assertEquals(201, result.getStatusCodeValue());
 		assertNotNull(result.getBody().getId());
 
-		assertEquals(result.getBody().getEmail(), customer.getEmail());
-		assertEquals(result.getBody().getName(), customer.getName());
+		assertEquals(result.getBody().getEmail(), customerDto.getEmail());
+		assertEquals(result.getBody().getName(), customerDto.getName());
 	}
 
 	@Test
-	public void shouldUpdateAPlace() {
-		Customer customer = new Customer();
-		customer.setId(2L);
-		customer.setEmail("test_updated@mail.com");
-		customer.setName("Name integration test updated");
+	public void shouldUpdateACustomer() {
+		CustomerDto customerDto = new CustomerDto();
+		customerDto.setId(2L);
+		customerDto.setEmail("test_updated@mail.com");
+		customerDto.setName("Name integration test updated");
 
 		HttpHeaders headers = new HttpHeaders();
 
-		HttpEntity<Customer> request = new HttpEntity<>(customer, headers);
+		HttpEntity<CustomerDto> request = new HttpEntity<>(customerDto, headers);
 
-		ResponseEntity<Customer> result = this.restTemplate.exchange(endpoint.toString(), HttpMethod.PUT, request,
-				Customer.class);
+		ResponseEntity<CustomerDto> result = this.restTemplate.exchange(endpoint.toString(), HttpMethod.PUT, request,
+				CustomerDto.class);
 
 		assertEquals(200, result.getStatusCodeValue());
 
 		assertEquals(result.getBody().getId().intValue(), 2);
-		assertEquals(result.getBody().getEmail(), customer.getEmail());
-		assertEquals(result.getBody().getName(), customer.getName());
+		assertEquals(result.getBody().getEmail(), customerDto.getEmail());
+		assertEquals(result.getBody().getName(), customerDto.getName());
 	}
 
 }

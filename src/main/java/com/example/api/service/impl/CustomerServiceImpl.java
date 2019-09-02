@@ -80,8 +80,8 @@ public class CustomerServiceImpl implements ICustomerService {
 		return modelMapper.map(customer, CustomerDto.class);
 	}
 
-	private Customer convertToEntity(CustomerDto customer) {
-		return modelMapper.map(customer, Customer.class);
+	private Customer convertToEntity(CustomerDto customerDto) {
+		return modelMapper.map(customerDto, Customer.class);
 	}
 
 }
